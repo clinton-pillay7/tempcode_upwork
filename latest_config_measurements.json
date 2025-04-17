@@ -1,0 +1,85 @@
+{
+    "date_and_time": {
+        "date": "2025/03/28",
+        "time": "19:36:34",
+        "timestamp": "1743190594"
+    },
+    "measurements": [
+        {
+            "co2_ppm": "526",
+            "humidity_RH": "67",
+            "pm01_ugm3": "4",
+            "pm10_ugm3": "6",
+            "pm25_AQICN": "9",
+            "pm25_AQIUS": "33",
+            "pm25_ugm3": "6",
+            "temperature_C": "25.6",
+            "temperature_F": "78.0",
+            "voc_ppb": "-1"
+        }
+    ],
+    "serial_number": "X7KUGWY",
+    "settings": {
+        "control_panel_locked": false,
+        "follow_mode": "station",
+        "followed_station": "12865",
+        "is_aqi_usa": true,
+        "is_concentration_showed": false,
+        "is_indoor": true,
+        "is_lcd_on": true,
+        "is_network_time": true,
+        "is_temperature_celsius": true,
+        "language": "en-GB",
+        "lcd_brightness": 0,
+        "node_name": "Bedroom",
+        "power_saving": {
+            "2slots": [
+                {
+                    "hour_off": 9,
+                    "hour_on": 7
+                },
+                {
+                    "hour_off": 22,
+                    "hour_on": 18
+                }
+            ],
+            "mode": "no",
+            "running_time": 99,
+            "yes": [
+                {
+                    "hour": 14,
+                    "minute": 0
+                },
+                {
+                    "hour": 2,
+                    "minute": 0
+                }
+            ]
+        },
+        "sensor_mode": {
+            "custom_mode_interval": 0,
+            "mode": 1
+        },
+        "speed_unit": "km/h",
+        "timezone": "Asia/Dubai",
+        "tvoc_unit": "ppb"
+    },
+    "status": {
+        "app_version": "1.1903",
+        "battery": 100,
+        "datetime": 1743190594,
+        "device_name": "AIRVISUAL-X7KUGWY",
+        "ip_address": "192.168.1.15",
+        "mac_address": "a02c365279b6",
+        "model": 10,
+        "sensor_life": {
+            "pm25": 2523809207
+        },
+        "sensor_pm25_fw": "0.10.3.28",
+        "sensor_pm25_serial": "00000110030927031802",
+        "sync_time": 250000,
+        "system_version": "KBG57F70",
+        "used_memory": 3,
+        "wifi_strength": 4
+    }
+}
