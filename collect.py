@@ -3,6 +3,7 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import secrets
 
 
 def parse():
@@ -86,3 +87,49 @@ def generate_html(updatedresult):
 
     return html_table
 
+def mailto(htmltable):
+
+
+    # Email configuration
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+    sender_email = secrets.sender_email
+    sender_password = secrets.sender_password
+    receiver_email = secrets.receiver_email
+
+    # Create the email message
+    message = MIMEMultipart('alternative')
+    message['Subject'] = "Air quality"
+    message['From'] = sender_email
+    message['To'] = receiver_email
+
+    # Create the plain-text and HTML version of your message
+    text = """\
+    Hi,
+    This is a plain text version of the message.
+    """
+    headers = ("co2_ppm","humidity_RH","pm01_ugm3","pm10_ugm3","pm25_AQICN","pm25_AQIUS","pm25_ugm3","temperature_C","temperature_F","voc_ppb")
+    html = "<table border='1' style='border-collapse: collapse;'>"
+        
+    # Table headers
+    html += "<tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr>"
+
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(text, 'plain')
+    part2 = MIMEText(html, 'html')
+
+    # Add both parts to MIMEMultipart (HTML last for email clients that prefer it)
+    message.attach(part1)
+    message.attach(part2)
+
+    # Send the email via SMTP server
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+    finally:
+        server.quit()
