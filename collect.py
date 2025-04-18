@@ -33,7 +33,7 @@ def parse():
             consolidated[drive].update(nodriveobj)
     return consolidated    
 
-def update_rooms(consolidated):
+def update_locations(consolidated):
     # Keys you want to rename - works
     key_replacements = {
         "W": "Office",
@@ -43,11 +43,11 @@ def update_rooms(consolidated):
     }  
 
     updatedresult = {
-        key_replacements.get(k, k): v for k, v in result.items()
+        key_replacements.get(k, k): v for k, v in consolidated.items()
     }
     return updatedresult
 
-def generate_html(updatedresult):
+def generate_html(result):
     # Create HTML table
     html_table = """
     <table border="1">
@@ -66,7 +66,7 @@ def generate_html(updatedresult):
         </tr>
     """
 
-    for item in updatedresult:
+    for item in result:
         html_table += f"""
         <tr>
             <td>{item}</td>
@@ -89,7 +89,6 @@ def generate_html(updatedresult):
 
 def mailto(htmltable):
 
-
     # Email configuration
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
@@ -103,24 +102,19 @@ def mailto(htmltable):
     message['From'] = sender_email
     message['To'] = receiver_email
 
-    # Create the plain-text and HTML version of your message
+
     text = """\
     Hi,
-    This is a plain text version of the message.
+    This is latest data collected.
     """
-    headers = ("co2_ppm","humidity_RH","pm01_ugm3","pm10_ugm3","pm25_AQICN","pm25_AQIUS","pm25_ugm3","temperature_C","temperature_F","voc_ppb")
-    html = "<table border='1' style='border-collapse: collapse;'>"
-        
-    # Table headers
-    html += "<tr>" + "".join(f"<th>{header}</th>" for header in headers) + "</tr>"
 
-    # Turn these into plain/html MIMEText objects
-    part1 = MIMEText(text, 'plain')
-    part2 = MIMEText(html, 'html')
+# Turn these into plain/html MIMEText objects
+    
+    part1 = MIMEText(htmltable, 'html')
 
-    # Add both parts to MIMEMultipart (HTML last for email clients that prefer it)
+# Add both parts to MIMEMultipart (HTML last for email clients that prefer it)
+    
     message.attach(part1)
-    message.attach(part2)
 
     # Send the email via SMTP server
     try:
@@ -128,8 +122,20 @@ def mailto(htmltable):
         server.starttls()
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
-        print("Email sent successfully!")
+        return "Email sent successfully!"
     except Exception as e:
         print(f"Failed to send email: {e}")
+        return None
     finally:
         server.quit()
+
+def main():
+    parseoutput = parse()
+    locations = update_locations(parseoutput)
+    htmlcode = generate_html(locations)
+    mailto(htmlcode)
+    return "data collected and sent"
+
+if __name__ == "__main__":
+    result = main()
+    print(result)
